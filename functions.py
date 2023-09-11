@@ -223,7 +223,7 @@ class POSTS:
         tag =True
 
         if tag ==True:
-            while self.browser.is_element_enabled(ele):
+            while True:
                 try:
                     data_fetched = self.send_to_excel(i)
                     if data_fetched == False:
