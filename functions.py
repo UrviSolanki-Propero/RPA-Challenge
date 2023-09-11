@@ -227,6 +227,7 @@ class POSTS:
                 try:
                     data_fetched = self.send_to_excel(i)
                     if data_fetched == False:
+                        tag= False
                         break
                     else:
                         logger.info(f"page {i} done..")
@@ -240,8 +241,6 @@ class POSTS:
                 except NoSuchElementException:
                     logger.info(f"No News Found on {self.phrase}")
             tag= False
-        else:    
-            self.browser.close_browser()
 
     def news_stories(self, index):
         """Fetching news stories.
