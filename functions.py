@@ -29,9 +29,6 @@ class POSTS:
         self.months = self.workitem["months"]
         self.excel = Excel()
         self.http = HTTP()
-        # self.phrase = workitems()["phrase"]
-        # self.section = workitems()["section"]
-        # self.months = workitems()["months"]
 
     def open_website(self) -> None:
         """Opens the web browser and clicks on the Continue button if a pop-up window shows up.
@@ -92,9 +89,7 @@ class POSTS:
             date_ranges = self.get_date_ranges(input_months)
             all_dates = self.get_all_dates_in_ranges(date_ranges)
 
-            # print("All Dates:")
             formatted_dates = [self.format_date(date) for date in all_dates]
-            # print(formatted_dates)
             return formatted_dates
 
         else:
@@ -163,7 +158,7 @@ class POSTS:
         Returns:
             None.
         """
-        print("sorting")
+        logger.info("sorting...")
         self.browser.scroll_element_into_view(
             "//ul/li/a[normalize-space()='Newest']")
         self.browser.wait_until_element_is_enabled(
@@ -176,7 +171,7 @@ class POSTS:
         Returns:
             None.
         """
-        print("selecting sections")
+        logger.info("selecting sections..")
         self.browser.wait_until_element_is_enabled(
             "//div/nav/h3[normalize-space()='Sections']")
         self.browser.scroll_element_into_view(
@@ -215,7 +210,7 @@ class POSTS:
         else:
             logger.info(f"Section {self.section} is not available.")
             raise AssertionError
-        print("done sections")
+        logger.info("done selecting sections..")
 
     def get_required_data(self):
         """Gets the required news data.
@@ -224,33 +219,24 @@ class POSTS:
         """
         i = 1
         ele = f"//a[normalize-space()='See More Stories']"
-        print("getting required data...")
+        logger.info("getting required data...")
+        self.browser.wait_until_element_is_enabled(ele)
 
-        # if self.browser.is_element_enabled(ele):
-
-        while self.browser.is_element_enabled(ele):
+        while True:
             try:
                 data_fetched = self.send_to_excel(i)
                 if data_fetched == False:
-                    print("out")
                     break
                 else:
-                    print(i, "page")
+                    logger.info("page", i, "done..")
                     self.browser.scroll_element_into_view(ele)
                     self.browser.wait_until_element_is_enabled(
                         ele, timeout=10)
                     self.browser.click_element_when_visible(ele)
                     i = i+1
-                # except ElementNotFound:
                     logger.info("Scrapped all data scuessfully ")
-                #    break
-
-        # else:
-        # try:
-                logger.info("Scrapped all data scuessfully ")
 
             except NoSuchElementException:
-                print('error')
                 logger.info(f"No News Found on {self.phrase}")
         self.browser.close_browser()
 
@@ -269,7 +255,6 @@ class POSTS:
 
         path = f"//div[@class='search-results__story']"
         i = len(self.browser.find_elements(path))
-        print(i)
 
         for var in range(1, i+1):
             self.browser.scroll_element_into_view(
@@ -282,8 +267,6 @@ class POSTS:
             date_str = date_string[0]
             time_stamped_date = datetime.strptime(date_str, '%B %d, %Y')
             final_date = datetime.strftime(time_stamped_date, '%B %d, %Y')
-
-            print("**", final_date)
 
             if final_date in self.set_dates():
 
@@ -318,7 +301,8 @@ class POSTS:
                 phrase_list.append(
                     f'Title: {title_count}; Description: {description_count}')
             else:
-                print("Found a date from the last month. Stopping scraping.")
+                logger.info(
+                    "Found a date from the last month. Stopping scraping.")
                 # Stop scraping if the date is out of range
                 self.close()
                 break
@@ -376,7 +360,6 @@ class POSTS:
 
         if news_data.date_list:
             check = news_data.date_list[-1]
-            # print("***********", check)
             if check in self.set_dates():
                 flag = True
             else:
@@ -397,20 +380,3 @@ class POSTS:
 
     def close(self):
         self.browser.close_browser()
-
-
-'''
-
-p = POSTS()
-# try:
-
-p.open_website()
-p.phrase_search()
-p.set_dates()
-p.sort_by()
-p.select_sections()
-# p.send_to_excel(1)
-p.get_required_data()
-# except:
-#    p.close()
-'''
