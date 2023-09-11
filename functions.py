@@ -220,25 +220,28 @@ class POSTS:
         i = 1
         ele = f"//a[normalize-space()='See More Stories']"
         logger.info("getting required data...")
-        self.browser.wait_until_element_is_enabled(ele)
+        tag =True
 
-        while True:
-            try:
-                data_fetched = self.send_to_excel(i)
-                if data_fetched == False:
-                    break
-                else:
-                    logger.info("page", i, "done..")
-                    self.browser.scroll_element_into_view(ele)
-                    self.browser.wait_until_element_is_enabled(
-                        ele, timeout=10)
-                    self.browser.click_element_when_visible(ele)
-                    i = i+1
-                    logger.info("Scrapped all data scuessfully ")
+        if tag ==True:
+            while self.browser.is_element_enabled(ele):
+                try:
+                    data_fetched = self.send_to_excel(i)
+                    if data_fetched == False:
+                        break
+                    else:
+                        logger.info("page", i, "done..")
+                        self.browser.scroll_element_into_view(ele)
+                        self.browser.wait_until_element_is_enabled(
+                            ele, timeout=10)
+                        self.browser.click_element_when_visible(ele)
+                        i = i+1
+                        logger.info("Scrapped all data scuessfully ")
 
-            except NoSuchElementException:
-                logger.info(f"No News Found on {self.phrase}")
-        self.browser.close_browser()
+                except NoSuchElementException:
+                    logger.info(f"No News Found on {self.phrase}")
+            tag= False
+        else:    
+            self.browser.close_browser()
 
     def news_stories(self, index):
         """Fetching news stories.
