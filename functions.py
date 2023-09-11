@@ -229,7 +229,7 @@ class POSTS:
                     if data_fetched == False:
                         break
                     else:
-                        logger.info("page", i, "done..")
+                        logger.info(f"page {i} done..")
                         self.browser.scroll_element_into_view(ele)
                         self.browser.wait_until_element_is_enabled(
                             ele, timeout=10)
