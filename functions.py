@@ -289,7 +289,7 @@ class POSTS:
                         f"//div[@class='search-results__story'][{var}]//div/div/a/img", 'src')
 
                     image_filename = f'page({index})_image-news({var}).png'
-                    image_path = os.path.join(DIRS.IMG_Path, image_filename)
+                    image_path = os.path.join(DIRS.IMAGE_DIR, image_filename)
 
                     self.download_picture(image_src, image_path)
                 else:
