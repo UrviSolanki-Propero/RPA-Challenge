@@ -6,11 +6,11 @@ from logger import logger
 from workitems import workitems
 
 
-class Process_Flow:
-    def __init__(self) -> None:
+class ProcessFlow:
+    def __init__(self):
         self.workitems = workitems()
 
-    def make_dirs(self) -> None:
+    def make_dirs(self):
         """
         Builds required DIRS.
         """
@@ -48,8 +48,6 @@ class Process_Flow:
             else:
                 logger.info(message)
                 logger.info('Ending the process.')
-                logger.info(message)
-                logger.info('Ending the process.')
 
             if flag:
 
@@ -73,7 +71,7 @@ class Process_Flow:
             raise e
 
     def start_process(self) -> None:
-        # self.make_dirs()
+        self.make_dirs()
         self.run_process()
 
 
@@ -82,7 +80,7 @@ def tasks():
     Initilize the process.
     """
 
-    process = Process_Flow()
+    process = ProcessFlow()
     process.start_process()
 
 
