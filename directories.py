@@ -6,4 +6,4 @@ class DIRS:
     File_Path = os.path.join(OUTPUT, "Fresh News.xlsx")
     IMAGE_DIR = os.path.join(OUTPUT, "images")
     ERROR_SCREENSHOT_PATH = os.path.join(OUTPUT, "error.png")
-    ARCH_Path = IIMAGE_DIR
+    ARCH_Path = IMAGE_DIR
