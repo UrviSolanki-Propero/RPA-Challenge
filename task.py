@@ -16,8 +16,8 @@ class Process_Flow:
         """
         if not os.path.exists(DIRS.OUTPUT):
             os.mkdir(DIRS.OUTPUT)
-        if not os.path.exists(DIRS.IMG_Path):
-            os.mkdir(DIRS.IMG_Path)
+        if not os.path.exists(DIRS.IMAGE_DIR):
+            os.mkdir(DIRS.IMAGE_DIR)
 
     def run_process(self):
 
@@ -60,8 +60,8 @@ class Process_Flow:
                     'The news is successfully uploaded in the excel file.')
                 logger.info("Ending the process.")
                 shutil.make_archive(DIRS.ARCH_Path,
-                                    'zip', DIRS.IMG_Path)
-                shutil.rmtree(DIRS.IMG_Path)
+                                    'zip', DIRS.IMAGE_DIR)
+                shutil.rmtree(DIRS.IMAGE_DIR)
 
             else:
                 logger.info('Applying filters not successful.')
