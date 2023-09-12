@@ -22,16 +22,13 @@ class POSTS:
             Returns:
                 None.
             """
-        # self.workitem = workitems()
+        self.workitem = workitems()
         self.browser = Selenium()
-        # self.phrase: str = self.workitem["phrase"]
-        # self.section: str = self.workitem["section"]
-        # self.months = self.workitem["months"]
+        self.phrase: str = self.workitem["phrase"]
+        self.section: str = self.workitem["section"]
+        self.months = self.workitem["months"]
         self.excel = Excel()
         self.http = HTTP()
-        self.phrase = workitems()["phrase"]
-        self.section = workitems()["section"]
-        self.months = workitems()["months"]
 
     def open_website(self) -> None:
         """Opens the web browser and clicks on the Continue button if a pop-up window shows up.
