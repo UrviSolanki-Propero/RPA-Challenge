@@ -5,7 +5,7 @@ import os
 import re
 from typing import Tuple
 from selenium.common.exceptions import NoSuchElementException
-from SeleniumLibrary.errors import ElementNotFound
+from SeleniumLibrary.errors import ElementNotFound, NoOpenBrowser
 from excel import Excel
 from directories import DIRS
 from logger import logger
@@ -22,13 +22,16 @@ class POSTS:
             Returns:
                 None.
             """
-        self.workitem = workitems()
+        # self.workitem = workitems()
         self.browser = Selenium()
-        self.phrase: str = self.workitem["phrase"]
-        self.section: str = self.workitem["section"]
-        self.months = self.workitem["months"]
+        # self.phrase: str = self.workitem["phrase"]
+        # self.section: str = self.workitem["section"]
+        # self.months = self.workitem["months"]
         self.excel = Excel()
         self.http = HTTP()
+        self.phrase = workitems()["phrase"]
+        self.section = workitems()["section"]
+        self.months = workitems()["months"]
 
     def open_website(self) -> None:
         """Opens the web browser and clicks on the Continue button if a pop-up window shows up.
@@ -108,20 +111,25 @@ class POSTS:
         date_ranges = []
 
         for i in range(months_back + 1):
-            target_month = current_month - i
+            if i == 0:
+                target_month = current_month
+            else:
+                target_month = current_month - (i - 1)
+
             target_year = current_year
 
-            if target_month <= 0:
+            while target_month <= 0:
                 target_month += 12
                 target_year -= 1
 
             first_day = datetime(target_year, target_month, 1)
 
             # Calculate the last day of the month
-            last_day = datetime(target_year, target_month, 1)
-            while last_day.month == target_month:
-                last_day += timedelta(days=1)
-            last_day -= timedelta(days=1)
+            if target_month == 12:
+                last_day = datetime(target_year + 1, 1, 1) - timedelta(days=1)
+            else:
+                last_day = datetime(
+                    target_year, target_month + 1, 1) - timedelta(days=1)
 
             date_ranges.append((first_day, last_day))
 
@@ -220,17 +228,18 @@ class POSTS:
         i = 1
         ele = f"//a[normalize-space()='See More Stories']"
         logger.info("getting required data...")
-        tag =True
+        self.browser.wait_until_element_is_enabled(ele)
+        tag = True
 
-        if tag ==True:
+        if tag == True:
             while True:
                 try:
                     data_fetched = self.send_to_excel(i)
                     if data_fetched == False:
-                        tag= False
+                        tag = False
                         break
                     else:
-                        logger.info(f"page {i} done..")
+                        logger.info("page", i, "done..")
                         self.browser.scroll_element_into_view(ele)
                         self.browser.wait_until_element_is_enabled(
                             ele, timeout=10)
@@ -240,7 +249,7 @@ class POSTS:
 
                 except NoSuchElementException:
                     logger.info(f"No News Found on {self.phrase}")
-            tag= False
+            tag = False
 
     def news_stories(self, index):
         """Fetching news stories.
