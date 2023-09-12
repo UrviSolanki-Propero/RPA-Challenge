@@ -48,7 +48,7 @@ class Process_Flow:
             else:
                 logger.info(message)
                 logger.info('Ending the process.')
-                print(message)
+                logger.info(message)
                 logger.info('Ending the process.')
 
             if flag:
