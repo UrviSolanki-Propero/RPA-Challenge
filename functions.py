@@ -306,7 +306,6 @@ class POSTS:
                 logger.info(
                     "Found a date from the last month. Stopping scraping.")
                 # Stop scraping if the date is out of range
-                self.close()
                 break
 
         return title_list, date_list, description_list, image_filename_list, money_present_list, phrase_list
