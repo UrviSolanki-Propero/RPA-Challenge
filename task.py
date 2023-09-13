@@ -60,14 +60,17 @@ class ProcessFlow:
                 shutil.make_archive(DIRS.ARCH_Path,
                                     'zip', DIRS.IMAGE_DIR)
                 shutil.rmtree(DIRS.IMAGE_DIR)
+                posts.close()
 
             else:
                 logger.info('Applying filters not successful.')
                 logger.info('Ending the process.')
+                posts.close()
 
         except Exception as e:
             posts.browser.screenshot(
                 filename=DIRS.ERROR_SCREENSHOT_PATH)
+            posts.close()
             raise e
 
     def start_process(self) -> None:
