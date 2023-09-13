@@ -66,6 +66,7 @@ class ProcessFlow:
                 logger.info('Applying filters not successful.')
                 logger.info('Ending the process.')
                 posts.close()
+                posts.close()
 
         except Exception as e:
             posts.browser.screenshot(
