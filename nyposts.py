@@ -5,7 +5,6 @@ import os
 import re
 from typing import Tuple
 from selenium.common.exceptions import NoSuchElementException
-from SeleniumLibrary.errors import ElementNotFound, NoOpenBrowser
 from excel import Excel
 from directories import DIRS
 from logger import logger
